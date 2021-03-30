@@ -1,8 +1,11 @@
-package hu.webuni.hr.roka;
+package hu.webuni.hr.roka.dto;
 
 import java.time.LocalDateTime;
 
-public class Employer {
+import hu.webuni.hr.roka.Employer;
+import hu.webuni.hr.roka.Grade;
+
+public class EmployeeDto extends Employer{
 
 	private long id;
 	private String name;
@@ -10,9 +13,9 @@ public class Employer {
 	private int payment;
 	private LocalDateTime firstDate;
 	
-	public Employer() {}
+	public EmployeeDto() {}
 	
-	public Employer(long id, String name, Grade grade, int payment, LocalDateTime firstDate) {
+	public EmployeeDto(long id, String name, Grade grade, int payment, LocalDateTime firstDate) {
 		super();
 		this.id = id;
 		this.name = name;
