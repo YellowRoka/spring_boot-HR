@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Stream;
 
-import javax.websocket.server.PathParam;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,9 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import hu.webuni.hr.roka.Grade;
@@ -95,7 +91,12 @@ public class HRController {
 	}
 	
 	@GetMapping("search")
-	public Stream<Entry<Long,EmployeeDto>> getEmployerByPayment_2(@RequestParam int limit) {
-		return	employers.entrySet().stream().filter(emp -> emp.getValue().getPayment() > limit);
+	public  ResponseEntity<Stream<Entry<Long,EmployeeDto>>> getEmployerByPayment_2(@RequestParam String limit) {
+		if(!limit.isEmpty()) {
+			return	ResponseEntity.ok(employers.entrySet().stream().filter(emp -> emp.getValue().getPayment() > Integer.parseInt(limit)));
+		}
+		else {
+			return ResponseEntity.notFound().build();
+		}
 	}
 }
