@@ -49,7 +49,8 @@ public class SmartEmployeeService implements EmployeeService
 		else if( juniorLimit    > calculatedTime)                          risePercent = juniorRise;
 		else                                                               risePercent = 0.0;
 		
-		return (int)((employer.getPayment()*(1+risePercent)));
+		//return (int)((employer.getPayment()*(1+risePercent)));
+		return (int)(risePercent*100);
 	}
 
 }

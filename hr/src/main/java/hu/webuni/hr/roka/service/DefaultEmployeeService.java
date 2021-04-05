@@ -9,7 +9,8 @@ public class DefaultEmployeeService implements EmployeeService {
 
 	@Override
 	public int getPayRaisePercent(Employer employer) {
-		return (int)(employer.getPayment()*1.05);
+		//return (int)(employer.getPayment()*1.05);
+		return (int)(0.05*100);
 	}
 	
 }

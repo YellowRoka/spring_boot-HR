@@ -1,23 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<style>
+	table, th, td {
+  	border: 1px solid black;
+	}
+</style>
 <meta charset="utf-8">
+<head>
 <title>HR application</title>
 </head>
 <body>
-
 	<h1>List of employees</h1>
 	
-	<ul>
-		<li th:each="employer_ : ${emps}">
-			<span th:text="${employer_.id}">id</span>
-			<span th:text="${employer_.name}">name</span>
-			<span th:text="${employer_.grade}">grade</span>
-			<span th:text="${employer_.payment}">payment</span>
-			<span th:text="${employer_.firstDate}">firstDate</span>
-		</li>
-		
-	</ul>
+	<table style="width:100%">
+		<tr>
+	    	<th>id</th>
+	    	<th>name</th> 
+	    	<th>grade</th>
+	    	<th>payment</th>
+	    	<th>first date</th>
+	    	<th>remove</th>
+	  	</tr>
+		<tr>
+			<tr th:each="employer_ : ${emps}">
+				<th th:text="${employer_.id}">id</th>
+				<th <p><a th:href="@{/set(id=${employer_.id})}" th:text="${employer_.name}">name</th></a></p>
+				<th th:text="${employer_.grade}">grade</th>
+				<th th:text="${employer_.payment}">payment</th>
+				<th th:text="${employer_.firstDate}">firstDate</th>
+				<th <p><a th:href="@{/del(id=${employer_.id})}" th:text="Törlés">name</th></a></p>
+			</tr>
+		</tr>	
+	</table>
 	
 	<form th:action="@{/emps}" method="post" th:object="${newEmployer}">
 		Id: <input th:field="*{id}" /> <br/>
@@ -27,6 +41,6 @@
 		
 		<input type="submit" value="Add" />
 	</form>
-	
+
 </body>
 </html>
