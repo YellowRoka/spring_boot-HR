@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head>
+<title>HR application</title>
+</head>
+<body>
+	<h1>Employer setting</h1>
+	
+	<form th:action="@{/set}" method="post" th:object="${selectedEmployer}">
+		Name: <input th:field="*{name}" /> <br/>
+		Grade: <input th:field="*{grade}" /> <br/>
+		Payment: <input th:field="*{payment}" /> <br/>
+		
+		<input type="submit" value="Save" />
+	</form>
+	
+</body>
+</html>
