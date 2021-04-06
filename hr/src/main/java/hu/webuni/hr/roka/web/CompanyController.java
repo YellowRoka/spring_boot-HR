@@ -51,7 +51,8 @@ public class CompanyController {
 	}
 	
 	@GetMapping
-	public List<CompanyDto> getAll(@RequestParam Boolean fullOn){
+	public List<CompanyDto> getAll(@RequestParam(value="fullOn", required = false) Boolean fullOn){
+		if(fullOn==null)fullOn = false;
 		if(fullOn == true)
 			return new ArrayList<>(companies.values());
 		else {
@@ -68,8 +69,10 @@ public class CompanyController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<CompanyDto> getCompanyById(@PathVariable long id, @RequestParam Boolean fullOn) {
+	public ResponseEntity<CompanyDto> getCompanyById(@PathVariable long id, @RequestParam(value="fullOn", required=false) Boolean fullOn) {
 		CompanyDto comp = new CompanyDto();
+		
+		if(fullOn==null)fullOn = false;
 		if(fullOn == true)
 			comp = companies.get(id);
 		else {
@@ -123,10 +126,17 @@ public class CompanyController {
 	}
 	
 	@PutMapping
-	public CompanyDto companyChangeEmployers(@RequestParam long compId, @RequestBody HashMap<Long, EmployeeDto> newEmpList ){
+	public CompanyDto companyChangeEmployers(@RequestParam long compId, @RequestBody List<EmployeeDto> newEmpList ){
 		Map<Long, EmployeeDto> empList = companies.get(compId).getEmplyores();
+		
+		Map<Long, EmployeeDto> converter = new HashMap<>();
+		
+		Long idx = 0L;
+		for (EmployeeDto it : newEmpList) {
+			converter.put(idx++, it);
+		}
 		empList.clear();
-		empList.putAll(newEmpList);
+		empList.putAll(converter);
 		
 		return companies.get(compId);
 	}
