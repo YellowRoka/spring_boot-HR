@@ -1,15 +1,12 @@
 package hu.webuni.hr.roka.web;
 
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
-import org.springframework.http.ResponseEntity;
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,84 +16,88 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
-import hu.webuni.hr.roka.Grade;
 import hu.webuni.hr.roka.dto.EmployeeDto;
+import hu.webuni.hr.roka.mapper.EmployerMapper;
+import hu.webuni.hr.roka.model.Employer;
+import hu.webuni.hr.roka.service.EmployerContainer;
+
 
 @RestController
 @RequestMapping("/api/employees")
 public class HRController {
 	
-	private Map<Long, EmployeeDto> employers = new HashMap<>();
+	//@Autowired
+	EmployerContainer employerService = new EmployerContainer();
 	
-	{
-		LocalDateTime date_1 = LocalDateTime.of(2005, Month.JULY, 29, 19, 30, 40);
-		LocalDateTime date_2 = LocalDateTime.of(2010, Month.JULY, 29, 19, 30, 40);
-		LocalDateTime date_3 = LocalDateTime.of(2015, Month.JULY, 29, 19, 30, 40);
-		LocalDateTime date_4 = LocalDateTime.of(2020, Month.JULY, 29, 19, 30, 40);
-		
-		employers.put(0L, (new EmployeeDto(0L, "Ferenc", Grade.ceo,    20000, date_1)));
-		employers.put(1L, (new EmployeeDto(1L, "Adam",   Grade.senior, 15000, date_2)));
-		employers.put(2L, (new EmployeeDto(2L, "Erik",   Grade.medior, 10000, date_3)));
-		employers.put(3L, (new EmployeeDto(3L, "Dave",   Grade.junior, 5000,  date_4)));
-	}
+	@Autowired
+	EmployerMapper employerMapper;
 	
 	@GetMapping
 	public List<EmployeeDto> getAll(){
-		return new ArrayList<>(employers.values());
+		return employerMapper.employersToDtos(employerService.findAll());
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<EmployeeDto> getById(@PathVariable long id){
-		EmployeeDto employer = employers.get(id);
+	public EmployeeDto getById(@PathVariable long id){
+		Employer employer = employerService.findById(id);
 		
 		if (employer != null) {
-			return ResponseEntity.ok(employer);
+			return employerMapper.employerToDto(employer);
 		}
 		else {
-			return ResponseEntity.notFound().build();
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		}
 	}
 	
 	@PostMapping
-	public EmployeeDto createEmployer(@RequestBody EmployeeDto newEmployer) {
-		newEmployer.setFirstDate(LocalDateTime.now());
-		
-		employers.put(newEmployer.getId(), newEmployer);
-		
-		return newEmployer;
+	public EmployeeDto createEmployer(@RequestBody @Valid EmployeeDto newEmployer) {
+		//newEmployer.setFirstDate(LocalDateTime.now());
+		Employer employer = employerService.employerSave(employerMapper.dtoToEmployer(newEmployer));
+		return employerMapper.employerToDto(employer);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<EmployeeDto> modifyEmployer(@PathVariable long id ,@RequestBody EmployeeDto employerDto ){
+	public EmployeeDto modifyEmployer(@PathVariable long id ,@RequestBody @Valid EmployeeDto employerDto ){
+		Employer employer = employerService.findById(id);
 		
-		if(!employers.containsKey(id)) {
-			return ResponseEntity.notFound().build();
+		if(null == employer) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		}
 		
-		employerDto.setId(id);
-		employers.put(id, employerDto);
+		Employer modderEmployer = employerMapper.dtoToEmployer(employerDto);
+		Employer moddedEmployer = employerService.employerModify(id, modderEmployer);
 		
-		return ResponseEntity.ok(employerDto);
+		return employerMapper.employerToDto(moddedEmployer);
 	}
 	
 	@DeleteMapping("/{id}")
 	public void deleteEmployer(@PathVariable long id){
-		employers.remove(id);
+		employerService.emloyerDelete(id);
 	}
 	
 	@GetMapping("payment")
-	public Stream<Entry<Long,EmployeeDto>> getEmployerByPayment(@RequestBody EmployeeDto employerDto) {
-		return	employers.entrySet().stream().filter(emp -> emp.getValue().getPayment() > employerDto.getPayment());
+	public List<EmployeeDto> getEmployerByPayment(@RequestBody EmployeeDto employerDto) {
+		List<Employer> employres = employerService.findAll();
+		Employer employer = employerMapper.dtoToEmployer(employerDto);
+		
+		return	employerMapper.employersToDtos(employres
+					.stream()
+					.filter(emp -> emp.getPayment() > employer.getPayment()).collect(Collectors.toList()));
 	}
 	
 	@GetMapping("search")
-	public  ResponseEntity<Stream<Entry<Long,EmployeeDto>>> getEmployerByPayment_2(@RequestParam String limit) {
+	public  List<EmployeeDto> getEmployerByPayment_2(@RequestParam String limit) {
 		if(!limit.isEmpty()) {
-			return	ResponseEntity.ok(employers.entrySet().stream().filter(emp -> emp.getValue().getPayment() > Integer.parseInt(limit)));
+			List<Employer> employres = employerService.findAll();
+			return employerMapper.employersToDtos( employres
+					.stream()
+					.filter(emp -> emp.getPayment() > Integer.parseInt(limit))
+					.collect(Collectors.toList()));
 		}
 		else {
-			return ResponseEntity.notFound().build();
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		}
 	}
 }

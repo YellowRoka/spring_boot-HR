@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import hu.webuni.hr.roka.model.Employer;
 import hu.webuni.hr.roka.service.EmployeeService;
 
 @SpringBootApplication

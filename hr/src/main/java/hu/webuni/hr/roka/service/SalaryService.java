@@ -2,7 +2,7 @@ package hu.webuni.hr.roka.service;
 
 import org.springframework.stereotype.Service;
 
-import hu.webuni.hr.roka.Employer;
+import hu.webuni.hr.roka.model.Employer;
 
 @Service
 public class SalaryService{

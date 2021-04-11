@@ -1,6 +1,8 @@
-package hu.webuni.hr.roka;
+package hu.webuni.hr.roka.model;
 
 import java.time.LocalDateTime;
+
+import hu.webuni.hr.roka.Grade;
 
 public class Employer {
 

@@ -2,15 +2,28 @@ package hu.webuni.hr.roka.dto;
 
 import java.time.LocalDateTime;
 
-import hu.webuni.hr.roka.Employer;
-import hu.webuni.hr.roka.Grade;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.PastOrPresent;
 
-public class EmployeeDto extends Employer{
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.lang.NonNull;
+
+import hu.webuni.hr.roka.Grade;
+import hu.webuni.hr.roka.model.Employer;
+
+public class EmployeeDto{
 
 	private long id;
+	@NotNull(message = "Set a name")
 	private String name;
+	@NotNull(message = "Set a grade")
 	private Grade grade;
+	@Min(value = 1, message = "must be greater than 0" )
 	private int payment;
+	@PastOrPresent(message = "future value not acceptable")//@Past
 	private LocalDateTime firstDate;
 	
 	public EmployeeDto() {}

@@ -5,11 +5,10 @@ import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import hu.webuni.hr.roka.Employer;
+import hu.webuni.hr.roka.model.Employer;
 
 @Service
-public class SmartEmployeeService implements EmployeeService
-{
+public class SmartEmployeeService implements EmployeeService{
 	
 	@Value("${hr.employment.junior.limit}")
 	private double juniorLimit;
@@ -44,8 +43,8 @@ public class SmartEmployeeService implements EmployeeService
 
 
 		if     ( ceoLimit      <= calculatedTime)                          risePercent = ceoRise;
-		else if( seniorLimit   <= calculatedTime && 10 > calculatedTime )  risePercent = seniorRise;
-		else if( mediorLimit   <= calculatedTime && 5  > calculatedTime )  risePercent = mediorRise;
+		else if( seniorLimit   <= calculatedTime && ceoLimit > calculatedTime )  risePercent = seniorRise;
+		else if( mediorLimit   <= calculatedTime && seniorLimit  > calculatedTime )  risePercent = mediorRise;
 		else if( juniorLimit    > calculatedTime)                          risePercent = juniorRise;
 		else                                                               risePercent = 0.0;
 		
