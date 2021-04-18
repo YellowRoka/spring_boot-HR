@@ -1,22 +1,18 @@
 package hu.webuni.hr.roka;
 
-import java.time.LocalDateTime;
-import java.time.Month;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import hu.webuni.hr.roka.model.Employer;
 import hu.webuni.hr.roka.service.EmployeeService;
 
 @SpringBootApplication
 public class HrApplication implements CommandLineRunner{
 	
-	@Autowired
-	EmployeeService employeeService;
-	
+	//@Autowired
+	//private EmployeeService employeeService;
+/*	
 	LocalDateTime date1 = LocalDateTime.of(2020, Month.JULY, 29, 19, 30, 40);
 	LocalDateTime date2 = LocalDateTime.of(2017, Month.JULY, 29, 19, 30, 40);
 	LocalDateTime date3 = LocalDateTime.of(2010, Month.JULY, 29, 19, 30, 40);
@@ -30,21 +26,23 @@ public class HrApplication implements CommandLineRunner{
 	
 	Employer employer3 =
 			new Employer(3,"Zsolt",Grade.ceo,3000,date3);
-	
+*/		
 	public static void main(String[] args) {
 		SpringApplication.run(HrApplication.class, args);
 	}
-	
-//Első meghívás esetén hibát dob mivel több service is definiálva van és nincs kijelölve default.
+
+//Első meghívás esetén hibát dob mivel több service is definiálva van és nincs kijelölve default. 
+//--> megoldva: megnevezés eggyezési hiba volt
 	@Override
 	public void run(String... args) throws Exception {
-		
+	/*	
 		System.out.println(
 				employeeService.getPayRaisePercent(employer1));
 		System.out.println(
 				employeeService.getPayRaisePercent(employer2));
 		System.out.println(
 				employeeService.getPayRaisePercent(employer3));
+	*/
 	}
 
 }

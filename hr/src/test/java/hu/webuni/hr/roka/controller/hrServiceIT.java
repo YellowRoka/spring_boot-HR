@@ -61,6 +61,22 @@ public class hrServiceIT {
 	}
 	
 	@Test
+	//PUT
+	void testThatCreatedEmployerIsListedFalse() throws Exception {
+		
+		LocalDateTime date = LocalDateTime.of(2020, Month.JULY, 29, 19, 30, 40);
+		EmployeeDto newEmployer = new EmployeeDto(10,"",Grade.ceo,30000,date);
+		
+		WebTestClient
+		.post()
+		.uri(BASE_URI)
+		.bodyValue(newEmployer)
+		.exchange()
+		.expectStatus()
+		.isBadRequest();
+	}
+	
+	@Test
 	//POST
 	void testThatEmployerisModified() throws Exception{
 		List<EmployeeDto> empBefore = getAllEmp();
@@ -86,8 +102,30 @@ public class hrServiceIT {
 		//invalid input false positive
 		assertThat(employersAfter.get(position))
 		.isNotEqualTo(oldEmp);
-		
 	}
+	
+	@Test
+	//POST
+	void testThatEmployerisModifiedFalse() throws Exception{
+		List<EmployeeDto> empBefore = getAllEmp();
+		
+		int position = 1;
+		
+		EmployeeDto modifEmp = empBefore.get(position);
+		modifEmp.setName("András");
+		modifEmp.setGrade(Grade.ceo);
+		modifEmp.setPayment(7777);
+		
+		
+		WebTestClient
+		.put()
+		.uri(BASE_URI+"/"+Integer.toString(1000))
+		.bodyValue(modifEmp)
+		.exchange()
+		.expectStatus()
+		.isNotFound();
+	}
+	
 	private void modifyEmp(int position, EmployeeDto Emp) {
 		WebTestClient
 			.put()

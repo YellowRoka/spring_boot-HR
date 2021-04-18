@@ -1,6 +1,10 @@
 package hu.webuni.hr.roka.web;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -14,72 +18,73 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import hu.webuni.hr.roka.Grade;
 import hu.webuni.hr.roka.dto.EmployeeDto;
 import hu.webuni.hr.roka.mapper.EmployerMapper;
 import hu.webuni.hr.roka.model.Employer;
-import hu.webuni.hr.roka.service.EmployerContainer;
+import hu.webuni.hr.roka.repository.EmployeeRepository;
+import hu.webuni.hr.roka.service.EmployeeService;
+import hu.webuni.hr.roka.service.EmployerServiceAbsctract;
 
 
 @RestController
 @RequestMapping("/api/employees")
 public class HRController {
 	
-	//@Autowired
-	EmployerContainer employerService = new EmployerContainer();
+	@Autowired
+	EmployeeService employeeService;
 	
 	@Autowired
 	EmployerMapper employerMapper;
 	
-	@GetMapping
+	@GetMapping("/all")
 	public List<EmployeeDto> getAll(){
-		return employerMapper.employersToDtos(employerService.findAll());
+		return employerMapper.employersToDtos(employeeService.findAll());
 	}
 	
 	@GetMapping("/{id}")
 	public EmployeeDto getById(@PathVariable long id){
-		Employer employer = employerService.findById(id);
-		
-		if (employer != null) {
+		Employer employer = employeeService.findById(id)
+				.orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));
 			return employerMapper.employerToDto(employer);
-		}
-		else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-		}
 	}
 	
 	@PostMapping
 	public EmployeeDto createEmployer(@RequestBody @Valid EmployeeDto newEmployer) {
 		//newEmployer.setFirstDate(LocalDateTime.now());
-		Employer employer = employerService.employerSave(employerMapper.dtoToEmployer(newEmployer));
+		Employer employer = employeeService.employerSave(employerMapper.dtoToEmployer(newEmployer));
 		return employerMapper.employerToDto(employer);
 	}
 	
 	@PutMapping("/{id}")
 	public EmployeeDto modifyEmployer(@PathVariable long id ,@RequestBody @Valid EmployeeDto employerDto ){
-		Employer employer = employerService.findById(id);
-		
-		if(null == employer) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-		}
-		
+		Employer employer = employeeService.findById(id)
+				.orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));
+
 		Employer modderEmployer = employerMapper.dtoToEmployer(employerDto);
-		Employer moddedEmployer = employerService.employerModify(id, modderEmployer);
 		
-		return employerMapper.employerToDto(moddedEmployer);
+		try {
+			Employer moddedEmployer = employeeService.employerModify(id, modderEmployer);
+			return employerMapper.employerToDto(moddedEmployer);
+		}
+		catch(NoSuchElementException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}	
 	}
 	
 	@DeleteMapping("/{id}")
 	public void deleteEmployer(@PathVariable long id){
-		employerService.emloyerDelete(id);
+		employeeService.emloyerDelete(id);
 	}
 	
 	@GetMapping("payment")
 	public List<EmployeeDto> getEmployerByPayment(@RequestBody EmployeeDto employerDto) {
-		List<Employer> employres = employerService.findAll();
+		List<Employer> employres = employeeService.findAll();
 		Employer employer = employerMapper.dtoToEmployer(employerDto);
 		
 		return	employerMapper.employersToDtos(employres
@@ -90,7 +95,7 @@ public class HRController {
 	@GetMapping("search")
 	public  List<EmployeeDto> getEmployerByPayment_2(@RequestParam String limit) {
 		if(!limit.isEmpty()) {
-			List<Employer> employres = employerService.findAll();
+			List<Employer> employres = employeeService.findAll();
 			return employerMapper.employersToDtos( employres
 					.stream()
 					.filter(emp -> emp.getPayment() > Integer.parseInt(limit))
@@ -99,5 +104,23 @@ public class HRController {
 		else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		}
+	}
+	
+	@GetMapping("grade")
+	public List<EmployeeDto> getEmployesByGrade(@RequestParam int grade){
+		List<Employer> employers = employeeService.findByGrade(Grade.values()[grade]);
+		return employerMapper.employersToDtos(employers);
+	}
+	
+	@GetMapping("partname")
+	public List<EmployeeDto> findByString(@RequestParam String partString){
+		List<Employer> employers = employeeService.findByPartName(partString);
+		return employerMapper.employersToDtos(employers);
+	}
+	
+	@GetMapping("dates")
+	public List<EmployeeDto> findBetweenDate(@RequestParam  String firstDate, @RequestParam  String lastDate){
+		List<Employer> employers = employeeService.findBetweenDate(LocalDateTime.parse(firstDate),LocalDateTime.parse(lastDate));
+		return employerMapper.employersToDtos(employers);
 	}
 }

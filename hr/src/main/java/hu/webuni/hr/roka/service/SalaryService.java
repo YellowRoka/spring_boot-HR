@@ -11,7 +11,7 @@ public class SalaryService{
 	private Employer employer;
 	
 	public SalaryService(EmployeeService employeeService) {
-		//super();
+		super();
 		this.employeeService = employeeService;
 
 	}

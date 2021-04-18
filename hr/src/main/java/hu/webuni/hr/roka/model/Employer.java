@@ -2,10 +2,17 @@ package hu.webuni.hr.roka.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 import hu.webuni.hr.roka.Grade;
 
+@Entity
 public class Employer {
 
+	@Id
+	@GeneratedValue
 	private long id;
 	private String name;
 	private Grade grade;

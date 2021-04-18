@@ -3,13 +3,20 @@ package hu.webuni.hr.roka.service;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import hu.webuni.hr.roka.model.Employer;
+import hu.webuni.hr.roka.repository.EmployeeRepository;
 
 @Service
-public class SmartEmployeeService implements EmployeeService{
-	
+public class SmartEmployeeService extends EmployerServiceAbsctract{
+		
+	public SmartEmployeeService(EmployeeRepository employeeRepository) {
+		super(employeeRepository);
+		// TODO Auto-generated constructor stub
+	}
+
 	@Value("${hr.employment.junior.limit}")
 	private double juniorLimit;
 	@Value("${hr.employment.junior.paymentrise}")
