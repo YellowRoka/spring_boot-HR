@@ -13,7 +13,9 @@ public interface EmployeeRepository extends JpaRepository<Employer, Long> {
 
 	List<Employer> findByGrade(Grade grade);
 	
-	List<Employer> findByNameIsContaining(String partString);
+	//List<Employer> findByNameIsContaining(String partString);
+	
+	List<Employer> findByNameIgnoreCaseStartsWith(String partString);
 	
 	List<Employer> findAllByFirstDateBetween(LocalDateTime firstDate, LocalDateTime lastDate);
 }

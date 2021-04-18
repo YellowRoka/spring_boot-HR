@@ -1,5 +1,6 @@
 package hu.webuni.hr.roka.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,8 @@ import hu.webuni.hr.roka.mapper.CompanyMapper;
 import hu.webuni.hr.roka.mapper.EmployerMapper;
 import hu.webuni.hr.roka.model.Company;
 import hu.webuni.hr.roka.model.Employer;
+import hu.webuni.hr.roka.repository.CompanyRepository;
+import hu.webuni.hr.roka.repository.EmployeeRepository;
 import hu.webuni.hr.roka.service.CompanyService;
 import hu.webuni.hr.roka.service.EmployeeService;
 
@@ -32,7 +35,10 @@ import hu.webuni.hr.roka.service.EmployeeService;
 public class CompanyController {
 	
 	//@Autowired
-	CompanyService companyService = new CompanyService();
+	//CompanyRepository companyRepository;
+	
+	@Autowired
+	CompanyService companyService;// = new CompanyService(companyRepository);
 	
 	@Autowired
 	CompanyMapper companyMapper;
@@ -43,7 +49,7 @@ public class CompanyController {
 	@Autowired
 	EmployerMapper employerMapper;
 	
-	@GetMapping
+	@GetMapping("/all")
 	public List<CompanyDto> getAll(@RequestParam(value="fullOn", required = false) Boolean fullOn){
 		return companyMapper.companiesToDtos(companyService.getAll(fullOn));
 	}
@@ -80,30 +86,23 @@ public class CompanyController {
 	
 	@PostMapping("/{id}")
 	public CompanyDto companyAddEmployer(@PathVariable long id, @RequestBody EmployeeDto newEmp){
-		Map<Long, Employer> tmpEmpList = companyService.getCompanyById(id, true).getEmplyores();
-		tmpEmpList.put(id, employerMapper.dtoToEmployer(newEmp));
+		List<Employer> tmpEmpList = companyService.getCompanyById(id, true).getEmplyores();
+		tmpEmpList.add(employerMapper.dtoToEmployer(newEmp));
 		return companyMapper.companieToDto(companyService.getCompanyById(id, true));
 	}
 	
 	@DeleteMapping
 	public CompanyDto companyRemoveEmployer(@RequestParam long compId,@RequestParam long empId){
-		Map<Long, Employer> tmpEmpList = companyService.getCompanyById(compId, true).getEmplyores();
-		tmpEmpList.remove(empId);
+		//List<Employer> tmpEmpList = companyService.getCompanyById(compId, true).getEmplyores();
+		//tmpEmpList.remove(empId);
+		companyService.companyRemoveEmployer(compId, empId);
 		return companyMapper.companieToDto(companyService.getCompanyById(compId, true));
 	}
 	
 	@PutMapping
 	public CompanyDto companyChangeEmployers(@RequestParam long compId, @RequestBody List<EmployeeDto> newEmpList ){
-		Map<Long, Employer> empList = companyService.getCompanyById(compId, true).getEmplyores();
-		
-		Map<Long, Employer> converter = new HashMap<>();
-		
-		Long idx = 0L;
-		for (Employer it : employerMapper.dtosToEmployers(newEmpList)) {
-			converter.put(idx++, it);
-		}
-		empList.clear();
-		empList.putAll(converter);
+		Company empList =
+				companyService.companyChangeEmployers(compId, employerMapper.dtosToEmployers(newEmpList));
 		
 		return companyMapper.companieToDto(companyService.getCompanyById(compId, true));
 	}

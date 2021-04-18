@@ -30,9 +30,6 @@ public abstract class EmployerServiceAbsctract implements EmployeeService{
 	@Transactional
 	@Override
 	public Employer employerModify(long id, Employer employer) {
-		//employer.setId(employer.getId());
-		//employers.put(id, employer);
-		//return employer;
 		employer.setId(id);
 		return employeeRepository.save(employer);
 	}
@@ -59,7 +56,7 @@ public abstract class EmployerServiceAbsctract implements EmployeeService{
 	
 	@Override
 	public List<Employer> findByPartName(String partString){
-		return employeeRepository.findByNameIsContaining(partString);
+		return employeeRepository.findByNameIgnoreCaseStartsWith(partString);
 	}
 	
 	@Override

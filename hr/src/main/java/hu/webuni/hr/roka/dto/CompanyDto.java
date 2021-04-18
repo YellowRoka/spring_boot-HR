@@ -1,16 +1,17 @@
 package hu.webuni.hr.roka.dto;
 
+import java.util.List;
 import java.util.Map;
 
 public class CompanyDto {
 	private long id;
 	private String name;
 	private String location;
-	private Map<Long, EmployeeDto> emplyores;
+	private List<EmployeeDto> emplyores;
 	
 	public CompanyDto(){}
 
-	public CompanyDto(int id, String name, String location, Map<Long, EmployeeDto> emplyores) {
+	public CompanyDto(int id, String name, String location, List<EmployeeDto> emplyores) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -42,11 +43,11 @@ public class CompanyDto {
 		this.location = location;
 	}
 
-	public Map<Long, EmployeeDto> getEmplyores() {
+	public List<EmployeeDto> getEmplyores() {
 		return emplyores;
 	}
 
-	public void setEmplyores( Map<Long, EmployeeDto> emplyores) {
+	public void setEmplyores( List<EmployeeDto> emplyores) {
 		this.emplyores = emplyores;
 	}
 	

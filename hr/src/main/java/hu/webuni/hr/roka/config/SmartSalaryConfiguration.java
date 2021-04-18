@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import hu.webuni.hr.roka.repository.CompanyRepository;
 import hu.webuni.hr.roka.repository.EmployeeRepository;
+import hu.webuni.hr.roka.service.CompanyService;
 import hu.webuni.hr.roka.service.EmployeeService;
 import hu.webuni.hr.roka.service.EmployerServiceAbsctract;
 import hu.webuni.hr.roka.service.SmartEmployeeService;
@@ -17,9 +19,17 @@ public class SmartSalaryConfiguration {
 	@Autowired
 	EmployeeRepository employeeRepository;
 	
+	@Autowired
+	CompanyRepository companyRepository;
+	
 	@Bean
 	EmployeeService employeeService() {
 		return new SmartEmployeeService(employeeRepository);
+	}
+	
+	@Bean
+	CompanyService companyService() {
+		return new CompanyService(companyRepository);
 	}
 
 }
