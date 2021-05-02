@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 
 import hu.webuni.hr.roka.Grade;
+import hu.webuni.hr.roka.model.Company;
 import hu.webuni.hr.roka.model.Employer;
+import hu.webuni.hr.roka.model.Position;
 
 public class EmployeeDto{
 
@@ -23,17 +25,27 @@ public class EmployeeDto{
 	private String name;
 	
 	@NotNull(message = "Set a grade")
-	private Grade grade;
+	private Position grade;
 	
 	@Min(value = 1, message = "must be greater than 0" )
 	private int payment;
 	
 	@PastOrPresent(message = "future value not acceptable")//@Past
 	private LocalDateTime firstDate;
+	/*
+	private Company company;
 	
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+*/
 	public EmployeeDto() {}
 	
-	public EmployeeDto(long id, String name, Grade grade, int payment, LocalDateTime firstDate) {
+	public EmployeeDto(long id, String name, Position grade, int payment, LocalDateTime firstDate) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -54,10 +66,10 @@ public class EmployeeDto{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Grade getGrade() {
+	public Position getGrade() {
 		return grade;
 	}
-	public void setGrade(Grade grade) {
+	public void setGrade(Position grade) {
 		this.grade = grade;
 	}
 	public int getPayment() {

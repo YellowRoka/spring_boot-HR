@@ -16,8 +16,10 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 import hu.webuni.hr.roka.Grade;
+import hu.webuni.hr.roka.Req;
 import hu.webuni.hr.roka.dto.EmployeeDto;
 import hu.webuni.hr.roka.model.Employer;
+import hu.webuni.hr.roka.model.Position;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class hrServiceIT {
@@ -34,7 +36,7 @@ public class hrServiceIT {
 		List<EmployeeDto> empBefore = getAllEmp();
 		
 		LocalDateTime date = LocalDateTime.of(2020, Month.JULY, 29, 19, 30, 40);
-		EmployeeDto newEmployer = new EmployeeDto(10,"Géza",Grade.ceo,30000,date);
+		EmployeeDto newEmployer = new EmployeeDto(10,"Géza",new Position(Grade.ceo,Req.egyetem,500),30000,date);
 		
 		createEmp(newEmployer);
 		
@@ -65,7 +67,7 @@ public class hrServiceIT {
 	void testThatCreatedEmployerIsListedFalse() throws Exception {
 		
 		LocalDateTime date = LocalDateTime.of(2020, Month.JULY, 29, 19, 30, 40);
-		EmployeeDto newEmployer = new EmployeeDto(10,"",Grade.ceo,30000,date);
+		EmployeeDto newEmployer = new EmployeeDto(10,"",new Position(Grade.ceo,Req.egyetem,500),30000,date);
 		
 		WebTestClient
 		.post()
@@ -86,7 +88,7 @@ public class hrServiceIT {
 		EmployeeDto oldEmp = empBefore.get(position);
 		EmployeeDto modifEmp = empBefore.get(position);
 		modifEmp.setName("András");
-		modifEmp.setGrade(Grade.ceo);
+		modifEmp.setGrade(new Position(Grade.ceo,Req.egyetem,500));
 		modifEmp.setPayment(7777);
 		
 		
@@ -113,7 +115,7 @@ public class hrServiceIT {
 		
 		EmployeeDto modifEmp = empBefore.get(position);
 		modifEmp.setName("András");
-		modifEmp.setGrade(Grade.ceo);
+		modifEmp.setGrade(new Position(Grade.ceo,Req.egyetem,500));
 		modifEmp.setPayment(7777);
 		
 		

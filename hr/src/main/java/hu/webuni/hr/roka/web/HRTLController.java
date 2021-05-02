@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import hu.webuni.hr.roka.Grade;
+import hu.webuni.hr.roka.Req;
 import hu.webuni.hr.roka.dto.EmployeeDto;
+import hu.webuni.hr.roka.model.Position;
 
 @Controller
 public class HRTLController {
@@ -22,8 +24,8 @@ public class HRTLController {
 	
 	{
 		LocalDateTime date = LocalDateTime.now();
-		allEmployers.add(new EmployeeDto(0L, "Ferenc", Grade.ceo, 20000, date));
-		allEmployers.add(new EmployeeDto(1L, "Géza", Grade.senior, 1000, date));
+		allEmployers.add(new EmployeeDto(0L, "Ferenc", new Position(Grade.junior,Req.egyetem,500), 20000, date));
+		allEmployers.add(new EmployeeDto(1L, "Géza",new Position(Grade.senior,Req.egyetem,500), 1000, date));
 	}
 	
 	@GetMapping("/")

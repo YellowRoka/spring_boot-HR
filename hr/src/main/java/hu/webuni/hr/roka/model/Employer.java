@@ -5,6 +5,10 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import hu.webuni.hr.roka.Grade;
 
@@ -15,15 +19,22 @@ public class Employer {
 	@GeneratedValue
 	private long id;
 	private String name;
-	private Grade grade;
+	
+	//@ManyToOne
+	@OneToOne
+	private Position grade;
+	
 	private int payment;
 	private LocalDateTime firstDate;
 	
+	@ManyToOne
+	private Company company;
+	
 	public Employer() {}
 	
-	public Employer(long id, String name, Grade grade, int payment, LocalDateTime firstDate) {
+	public Employer(/*long id,*/ String name, Position grade, int payment, LocalDateTime firstDate) {
 		super();
-		this.id = id;
+		//this.id = id;
 		this.name = name;
 		this.grade = grade;
 		this.payment = payment;
@@ -42,10 +53,10 @@ public class Employer {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Grade getGrade() {
+	public Position getGrade() {
 		return grade;
 	}
-	public void setGrade(Grade grade) {
+	public void setGrade(Position grade) {
 		this.grade = grade;
 	}
 	public int getPayment() {
@@ -59,6 +70,14 @@ public class Employer {
 	}
 	public void setFirstDate(LocalDateTime firstDate) {
 		this.firstDate = firstDate;
+	}
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 	
 }

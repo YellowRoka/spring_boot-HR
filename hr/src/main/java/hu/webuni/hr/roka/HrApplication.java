@@ -6,10 +6,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import hu.webuni.hr.roka.service.EmployeeService;
+import hu.webuni.hr.roka.service.InitDbService;
 
 @SpringBootApplication
 public class HrApplication implements CommandLineRunner{
 	
+	@Autowired
+	private InitDbService initDbService;
 	//@Autowired
 	//private EmployeeService employeeService;
 /*	
@@ -35,6 +38,9 @@ public class HrApplication implements CommandLineRunner{
 //--> megoldva: megnevezés eggyezési hiba volt
 	@Override
 	public void run(String... args) throws Exception {
+		
+		initDbService.clearDB();
+		initDbService.insertTestData();
 	/*	
 		System.out.println(
 				employeeService.getPayRaisePercent(employer1));

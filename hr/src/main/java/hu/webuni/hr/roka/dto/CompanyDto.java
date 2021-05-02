@@ -3,10 +3,13 @@ package hu.webuni.hr.roka.dto;
 import java.util.List;
 import java.util.Map;
 
+import hu.webuni.hr.roka.Type;
+
 public class CompanyDto {
-	private long id;
+	private long   id;
 	private String name;
 	private String location;
+	private Type   type;
 	private List<EmployeeDto> emplyores;
 	
 	public CompanyDto(){}
@@ -43,6 +46,13 @@ public class CompanyDto {
 		this.location = location;
 	}
 
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
+	}
 	public List<EmployeeDto> getEmplyores() {
 		return emplyores;
 	}

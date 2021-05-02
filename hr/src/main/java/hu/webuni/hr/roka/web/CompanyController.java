@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,6 +53,13 @@ public class CompanyController {
 	@GetMapping("/all")
 	public List<CompanyDto> getAll(@RequestParam(value="fullOn", required = false) Boolean fullOn){
 		return companyMapper.companiesToDtos(companyService.getAll(fullOn));
+	}
+	
+	@GetMapping("/all2")
+	public Page<Company> getAll2(){
+	 Page<Company> all = companyService.getAll2();
+	 return all;
+				
 	}
 	
 	@GetMapping("/{id}")
@@ -107,4 +115,22 @@ public class CompanyController {
 		return companyMapper.companieToDto(companyService.getCompanyById(compId, true));
 	}
 
+	
+	@GetMapping
+	public List<CompanyDto> getCompaniesByGivenHeadCount(@RequestParam long headCount){
+		return companyMapper.companiesToDtos(
+				companyService.getCompaniesWithGivenHeadCnt(headCount));
+	}
+	
+	@GetMapping("/payment")
+	public List<CompanyDto> getCompaniesWhereEmployerPaymentIsBigger(@RequestParam long payLimit){
+		return companyMapper.companiesToDtos(
+				companyService.getCompaniesWhereEmployerPaymentIsBigger(payLimit));
+	}
+	
+	@GetMapping("/avg")
+	public List<EmployeeDto> getEmployersGroupByAVGPayment(@RequestParam long companyID){
+		return employerMapper.employersToDtos(
+				companyService.getEmployersByAVGPayment(companyID));
+	}
 }

@@ -9,11 +9,15 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import hu.webuni.hr.roka.Grade;
+import hu.webuni.hr.roka.dto.CompanyDto;
 import hu.webuni.hr.roka.model.Company;
 import hu.webuni.hr.roka.model.Employer;
 import hu.webuni.hr.roka.repository.CompanyRepository;
@@ -47,7 +51,7 @@ public class CompanyService {
 			return limitedCompaniesList;
 		}	
 	}
-	
+		
 	public Company getCompanyById( long id, Boolean fullOn) {
 		Company comp = companyRepository.findById(id)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -63,11 +67,11 @@ public class CompanyService {
 	}
 
 	@Transactional
-	public Company newCompany( Company newComp) {
+	public Company newCompany(Company newComp) {
 		return companyRepository.save(newComp);
 	}
 	
-	public void deleteCompany( long id) {
+	public void deleteCompany(long id) {
 		companyRepository.deleteById(id);
 	}
 	
@@ -76,6 +80,12 @@ public class CompanyService {
 		//Company compCheck = companyRepository.findById(id)
 		//		.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
+		company.setId(id);
+		return companyRepository.save(company);
+	}
+	
+	@Transactional
+	public Company extendCompany( long id,  Company company) {
 		company.setId(id);
 		return companyRepository.save(company);
 	}
@@ -120,4 +130,30 @@ public class CompanyService {
 		
 		return companyRepository.save(tmpComp);
 	}
+	
+
+	public List<Company> getCompaniesWithGivenHeadCnt(long headCount){
+		//return companyRepository.findAllCompanyWhereCountByEmplyoresGreaterThanEqual(headCount);
+		return null;
+	}
+	
+	public List<Company> getCompaniesWhereEmployerPaymentIsBigger(long payment){
+		//return companyRepository.findAllWhereEmployerPaymentIsBigger(payment);
+		return null;
+	}
+	
+	public List<Employer> getEmployersByAVGPayment(long companyID){
+		//return companyRepository.groupEmployerByAveragePayment(companyID);
+		return null;
+	}
+	
+	public Page<Company> getAll2(){
+		Pageable firstPageWithTwoElements = PageRequest.of(0, 2);
+		Pageable secondPageWithFiveElements = PageRequest.of(1, 5);
+		
+		//Page<Company> pagebleFounds = (Page<Company>) companyRepository.pagebleFindAll(firstPageWithTwoElements);
+		//return pagebleFounds;
+		return null;
+	}
+
 }
