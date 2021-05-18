@@ -61,7 +61,7 @@ public class CompanyService {
 			comp.setId(comp.getId());
 			comp.setLocation(comp.getLocation());
 			comp.setName(comp.getName());
-			comp.setEmplyores(null);
+			comp.setEmployers(null);
 		}
 		return comp;
 	}
@@ -95,10 +95,10 @@ public class CompanyService {
 		Company tmpComp = companyRepository.findById(id)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-		List<Employer> tmpEmpList = tmpComp.getEmplyores();
+		List<Employer> tmpEmpList = tmpComp.getEmployers();
 		tmpEmpList.add(newEmp);
 		
-		tmpComp.setEmplyores(tmpEmpList);
+		tmpComp.setEmployers(tmpEmpList);
 		return companyRepository.save(tmpComp);
 	}
 	
@@ -107,7 +107,7 @@ public class CompanyService {
 		Company tmpComp = companyRepository.findById(compId)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-		List<Employer> tmpEmpList = tmpComp.getEmplyores();
+		List<Employer> tmpEmpList = tmpComp.getEmployers();
 		int idx = 0;
 		for(Employer emp : tmpEmpList) {
 			if(empId == emp.getId()) break;
@@ -115,7 +115,7 @@ public class CompanyService {
 			
 		}
 		tmpEmpList.remove(idx);
-		tmpComp.setEmplyores(tmpEmpList);
+		tmpComp.setEmployers(tmpEmpList);
 		
 		return companyRepository.save(tmpComp);
 	}
@@ -125,28 +125,32 @@ public class CompanyService {
 		Company tmpComp = companyRepository.findById(compId)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-		tmpComp.setEmplyores(null);
-		tmpComp.setEmplyores(newEmpList);
+		tmpComp.setEmployers(null);
+		tmpComp.setEmployers(newEmpList);
 		
 		return companyRepository.save(tmpComp);
 	}
 	
-
+	//TODO: az alábbi 4 NULL-os lekérdezést nem tudom összehozni sokadig nekifutásra sem :\
+	//TODO: 1
 	public List<Company> getCompaniesWithGivenHeadCnt(long headCount){
 		//return companyRepository.findAllCompanyWhereCountByEmplyoresGreaterThanEqual(headCount);
 		return null;
 	}
 	
+	//TODO: 2
 	public List<Company> getCompaniesWhereEmployerPaymentIsBigger(long payment){
 		//return companyRepository.findAllWhereEmployerPaymentIsBigger(payment);
 		return null;
 	}
 	
+	//TODO:3
 	public List<Employer> getEmployersByAVGPayment(long companyID){
 		//return companyRepository.groupEmployerByAveragePayment(companyID);
 		return null;
 	}
 	
+	//TODO:4
 	public Page<Company> getAll2(){
 		Pageable firstPageWithTwoElements = PageRequest.of(0, 2);
 		Pageable secondPageWithFiveElements = PageRequest.of(1, 5);

@@ -4,10 +4,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import hu.webuni.hr.roka.Grade;
+import hu.webuni.hr.roka.dto.EmployeeDto;
+import hu.webuni.hr.roka.model.Company;
 import hu.webuni.hr.roka.model.Employer;
 import hu.webuni.hr.roka.repository.EmployeeRepository;
 
@@ -66,4 +71,47 @@ public abstract class EmployerServiceAbsctract implements EmployeeService{
 
 	@Override
 	public abstract int getPayRaisePercent(Employer employer);
+	
+	public List<Employer> searchWithExample(EmployeeDto example) {
+		long id = example.getId();
+		
+		Company comp = example.getCompany();
+		LocalDateTime date = example.getFirstDate();
+		
+		String name = example.getName();
+		long payment = example.getPayment();
+		
+		Specification<Employer> spec = Specification.where(null);
+		
+		
+		if(id>0) {
+			spec = spec.and(EmployerSpecifications.hasId(id));
+		}
+		
+		if (StringUtils.hasText(name)) {
+			spec = spec.and(EmployerSpecifications.hasName(name));
+		}
+		
+		if (comp != null) {
+			String compName = example.getCompany().getName();
+			spec = spec.and(EmployerSpecifications.hasCompany(compName));
+		}
+		
+		if (payment>0) {
+			spec = spec.and(EmployerSpecifications.hasPayment(payment));
+		}
+		
+		if (example.getGrade() != null) {
+			Grade gradeName = example.getGrade().getPosName();
+			spec = spec.and(EmployerSpecifications.hasGrade(gradeName));
+		}
+		
+		if (date != null) {
+			spec = spec.and(EmployerSpecifications.hasDate(date));
+		}
+		
+		List<Employer> retList = employeeRepository.findAll(spec, Sort.by("id"));
+		return retList;
+	}
+	
 }

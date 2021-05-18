@@ -10,6 +10,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import hu.webuni.hr.roka.Grade;
 import hu.webuni.hr.roka.Req;
 
@@ -25,6 +28,8 @@ public class Position {
 	
 	//@OneToMany(mappedBy = "grade")
 	@OneToOne
+	//@JsonManagedReference
+	//@JsonBackReference
 	private Employer employer;
 	
 	public Position() {};
@@ -67,13 +72,15 @@ public class Position {
 	public void setMinimalPayment(int minimalPayment) {
 		this.minimalPayment = minimalPayment;
 	}
-/*	
+	
 	public Employer getEmployer() {
 		return employer;
 	}
-*/
+
 	public void setEmployer(Employer employer) {
-		this.employer = employer;
+		if(this.employer == null) {
+			this.employer = employer;
+		}
 	}
 
 	public void addEmployer(Employer employer) {

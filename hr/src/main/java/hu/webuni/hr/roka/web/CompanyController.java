@@ -34,9 +34,10 @@ import hu.webuni.hr.roka.service.EmployeeService;
 @RestController
 @RequestMapping("api/companies")
 public class CompanyController {
+
+	@Autowired
+	CompanyRepository companyRepository;
 	
-	//@Autowired
-	//CompanyRepository companyRepository;
 	
 	@Autowired
 	CompanyService companyService;// = new CompanyService(companyRepository);
@@ -50,9 +51,16 @@ public class CompanyController {
 	@Autowired
 	EmployerMapper employerMapper;
 	
+	//TODO: itt sikerült valamit addig addig csiszolgatnom még legalább egy 660 soror rekurziót kidobott
+	//      ezután sikerült redukálni 440-re
+	//      majd olyan jól sikerült a redukálás, hogy többet nem volt hajlandó listázni az alkalmazottakat
+	//      annak ellenére h PGAdminban látszik a kapcsolat....bár én néhol sokallom az idegen kulcsok számát
 	@GetMapping("/all")
 	public List<CompanyDto> getAll(@RequestParam(value="fullOn", required = false) Boolean fullOn){
-		return companyMapper.companiesToDtos(companyService.getAll(fullOn));
+		return (fullOn == null || fullOn == false)?
+				companyMapper.companiesToDtos(companyRepository.findAllWithEmployers()):
+					companyMapper.companiesToDtos(companyService.getAll(fullOn));
+		
 	}
 	
 	@GetMapping("/all2")
@@ -73,8 +81,8 @@ public class CompanyController {
 	@PostMapping
 	public CompanyDto newCompany(@RequestBody CompanyDto newComp) {
 	Company	createdComp = companyMapper.dtoToCompany(newComp);
-		companyService.newCompany(createdComp); 
-		return companyMapper.companieToDto(companyService.getCompanyById(createdComp.getId(),true)); //visszajelzés
+		return companyMapper.companieToDto(companyService.newCompany(createdComp)); 
+		//return companyMapper.companieToDto(companyService.getCompanyById(createdComp.getId(),true)); //visszajelzés
 	}
 	
 	@DeleteMapping("/{id}")
@@ -88,13 +96,13 @@ public class CompanyController {
 		Company modComp = companyMapper.dtoToCompany(comp);
 		Company selectedComp = companyService.getCompanyById(id, true);
 		if(selectedComp == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-		companyService.modifyCompany(id, modComp);
-		return companyMapper.companieToDto(companyService.getCompanyById(id, true));
+		return companyMapper.companieToDto(companyService.modifyCompany(id, modComp));
+		//return companyMapper.companieToDto(companyService.getCompanyById(id, true));
 	}
 	
 	@PostMapping("/{id}")
 	public CompanyDto companyAddEmployer(@PathVariable long id, @RequestBody EmployeeDto newEmp){
-		List<Employer> tmpEmpList = companyService.getCompanyById(id, true).getEmplyores();
+		List<Employer> tmpEmpList = companyService.getCompanyById(id, true).getEmployers();
 		tmpEmpList.add(employerMapper.dtoToEmployer(newEmp));
 		return companyMapper.companieToDto(companyService.getCompanyById(id, true));
 	}
@@ -103,8 +111,8 @@ public class CompanyController {
 	public CompanyDto companyRemoveEmployer(@RequestParam long compId,@RequestParam long empId){
 		//List<Employer> tmpEmpList = companyService.getCompanyById(compId, true).getEmplyores();
 		//tmpEmpList.remove(empId);
-		companyService.companyRemoveEmployer(compId, empId);
-		return companyMapper.companieToDto(companyService.getCompanyById(compId, true));
+		return companyMapper.companieToDto(companyService.companyRemoveEmployer(compId, empId));
+		//return companyMapper.companieToDto(companyService.getCompanyById(compId, true));
 	}
 	
 	@PutMapping
@@ -112,7 +120,7 @@ public class CompanyController {
 		Company empList =
 				companyService.companyChangeEmployers(compId, employerMapper.dtosToEmployers(newEmpList));
 		
-		return companyMapper.companieToDto(companyService.getCompanyById(compId, true));
+		return companyMapper.companieToDto(empList);//companyMapper.companieToDto(companyService.getCompanyById(compId, true));
 	}
 
 	

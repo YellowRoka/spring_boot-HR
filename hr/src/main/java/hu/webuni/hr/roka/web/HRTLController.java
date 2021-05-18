@@ -24,8 +24,8 @@ public class HRTLController {
 	
 	{
 		LocalDateTime date = LocalDateTime.now();
-		allEmployers.add(new EmployeeDto(0L, "Ferenc", new Position(Grade.junior,Req.egyetem,500), 20000, date));
-		allEmployers.add(new EmployeeDto(1L, "Géza",new Position(Grade.senior,Req.egyetem,500), 1000, date));
+		allEmployers.add(new EmployeeDto("Ferenc", new Position(Grade.junior,Req.egyetem,500), 20000, date));
+		allEmployers.add(new EmployeeDto("Géza",new Position(Grade.senior,Req.egyetem,500), 1000, date));
 	}
 	
 	@GetMapping("/")

@@ -11,6 +11,7 @@ import java.util.List;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -36,7 +37,8 @@ public class hrServiceIT {
 		List<EmployeeDto> empBefore = getAllEmp();
 		
 		LocalDateTime date = LocalDateTime.of(2020, Month.JULY, 29, 19, 30, 40);
-		EmployeeDto newEmployer = new EmployeeDto(10,"Géza",new Position(Grade.ceo,Req.egyetem,500),30000,date);
+		EmployeeDto newEmployer = new EmployeeDto("Géza",new Position(Grade.ceo,Req.egyetem,500),30000,date);
+		newEmployer.setId(0);
 		
 		createEmp(newEmployer);
 		
@@ -67,7 +69,9 @@ public class hrServiceIT {
 	void testThatCreatedEmployerIsListedFalse() throws Exception {
 		
 		LocalDateTime date = LocalDateTime.of(2020, Month.JULY, 29, 19, 30, 40);
-		EmployeeDto newEmployer = new EmployeeDto(10,"",new Position(Grade.ceo,Req.egyetem,500),30000,date);
+		EmployeeDto newEmployer = new EmployeeDto("",new Position(Grade.ceo,Req.egyetem,500),30000,date);
+		
+		newEmployer.setId(1);
 		
 		WebTestClient
 		.post()
@@ -92,7 +96,7 @@ public class hrServiceIT {
 		modifEmp.setPayment(7777);
 		
 		
-		modifyEmp(position, modifEmp);
+		modifyEmp((int)modifEmp.getId(), modifEmp);
 		
 		List<EmployeeDto> employersAfter = getAllEmp();
 		
@@ -154,7 +158,7 @@ public class hrServiceIT {
 		List<EmployeeDto> responseList = 
 				WebTestClient
 					.get()
-					.uri(BASE_URI)
+					.uri(BASE_URI+"/all")
 					.exchange()
 					.expectStatus()
 					.isOk()

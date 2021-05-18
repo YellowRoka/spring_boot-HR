@@ -14,12 +14,17 @@ public class CompanyDto {
 	
 	public CompanyDto(){}
 
-	public CompanyDto(int id, String name, String location, List<EmployeeDto> emplyores) {
+	public CompanyDto(String name, String location) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.location = location;
-		this.emplyores = emplyores;
+	}
+	
+	public CompanyDto(String name, String location, List<EmployeeDto> emplyores) {
+		super();
+		this.name = name;
+		this.location = location;
+		//this.employers = emplyores;
 	}
 
 	public long getId() {

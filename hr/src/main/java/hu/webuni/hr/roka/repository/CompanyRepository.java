@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import hu.webuni.hr.roka.Grade;
+import hu.webuni.hr.roka.dto.EmployeeDto;
 import hu.webuni.hr.roka.model.Company;
 import hu.webuni.hr.roka.model.Employer;
 
@@ -37,4 +39,14 @@ public interface CompanyRepository extends JpaRepository<Company, Long>, PagingA
 			+ "group by e dsc")
 	List<Employer> groupEmployerByAveragePayment(long companyID);
 	 */
+	
+	
+	
+	//@Query("SELECT DISTINCT c from Company c LEFT JOIN FETCH c.employers")
+	//@EntityGraph("Company.full")
+	@EntityGraph(attributePaths = {"employers", "employers.grade"})
+	@Query("SELECT c FROM Company c")
+	public List<Company> findAllWithEmployers();
+
 	}
+

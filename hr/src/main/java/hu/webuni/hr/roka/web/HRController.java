@@ -9,8 +9,12 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.hibernate.annotations.Proxy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,14 +30,18 @@ import org.springframework.web.server.ResponseStatusException;
 import hu.webuni.hr.roka.Grade;
 import hu.webuni.hr.roka.dto.EmployeeDto;
 import hu.webuni.hr.roka.mapper.EmployerMapper;
+import hu.webuni.hr.roka.model.Company;
 import hu.webuni.hr.roka.model.Employer;
+import hu.webuni.hr.roka.model.Position;
 import hu.webuni.hr.roka.repository.EmployeeRepository;
 import hu.webuni.hr.roka.service.EmployeeService;
 import hu.webuni.hr.roka.service.EmployerServiceAbsctract;
+import hu.webuni.hr.roka.service.EmployerSpecifications;
 
 
 @RestController
 @RequestMapping("/api/employees")
+@Proxy(lazy = false)
 public class HRController {
 	
 	@Autowired
@@ -42,9 +50,14 @@ public class HRController {
 	@Autowired
 	EmployerMapper employerMapper;
 	
+	@Autowired
+	EmployeeRepository employeeRepository;
+	
+	//TODO: most már ő sem hajlandó lefutni
 	@GetMapping("/all")
 	public List<EmployeeDto> getAll(){
-		return employerMapper.employersToDtos(employeeService.findAll());
+		List<Employer> all = employeeService.findAll();
+		return employerMapper.employersToDtos(all);
 	}
 	
 	@GetMapping("/{id}")
@@ -123,4 +136,12 @@ public class HRController {
 		List<Employer> employers = employeeService.findBetweenDate(LocalDateTime.parse(firstDate),LocalDateTime.parse(lastDate));
 		return employerMapper.employersToDtos(employers);
 	}
+	
+	//TODO:ezt egyszer sikerült elindítani de valamit elrontottam valahol...azóta ez a funkció nem megy :( 
+	@GetMapping("/example")
+	public List<EmployeeDto> findEmployerByExample(@RequestBody EmployeeDto example){
+		List<Employer> employers = employeeService.searchWithExample(example);
+		return employerMapper.employersToDtos(employers);
+	}
+
 }

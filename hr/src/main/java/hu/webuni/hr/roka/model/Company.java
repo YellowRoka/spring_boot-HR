@@ -8,10 +8,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import hu.webuni.hr.roka.Type;
 
+@NamedEntityGraph(name = "Company.full", attributeNodes = @NamedAttributeNode("employers"))
 @Entity
 public class Company {
 	
@@ -23,15 +29,23 @@ public class Company {
 	private Type     type;
 	
 	@OneToMany(mappedBy = "company")
+	//@JsonManagedReference
+	//@JsonBackReference
 	private List <Employer> employers;
 	
 	public Company(){}
 
-	public Company(String name, String location, List<Employer> emplyores) {
+	public Company(String name, String location) {
 		super();
 		this.name      = name;
 		this.location  = location;
-		this.employers = emplyores;
+	}
+	
+	public Company(String name, String location , List<Employer> emplyores) {
+		super();
+		this.name      = name;
+		this.location  = location;
+		//this.employers = emplyores;
 	}
 
 	public long getId() {
@@ -66,23 +80,24 @@ public class Company {
 		this.type = type;
 	}
 
-	public List<Employer> getEmplyores() {
-		return employers;
-	}
-
-	public void setEmplyores( List<Employer> emplyores) {
-		this.employers = emplyores;
+	public List<Employer> getEmployers() {
+		return this.employers;
 	}
 	
 	public void addEmployer(Employer employer) {
-		if(this.employers == null) {
-			this.employers = new ArrayList<>();
-		}
-		this.employers.add(employer);
-		employer.setCompany(this);
+		//if(this.employers == null) {
+			this.employers.add(employer);
+		//}
+		//this.employers.add(employer);
+		//employer.setCompany(this);
 	}
 	
 	public void setEmployers(List<Employer> employers) {
-		this.employers = employers;
+		
+		if(this.employers == null) {
+			this.employers = employers;
+		}
 	}
+	
+	
 }

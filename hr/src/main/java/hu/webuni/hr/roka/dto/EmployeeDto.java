@@ -32,22 +32,13 @@ public class EmployeeDto{
 	
 	@PastOrPresent(message = "future value not acceptable")//@Past
 	private LocalDateTime firstDate;
-	/*
+	
 	private Company company;
 	
-	public Company getCompany() {
-		return company;
-	}
-
-	public void setCompany(Company company) {
-		this.company = company;
-	}
-*/
 	public EmployeeDto() {}
 	
-	public EmployeeDto(long id, String name, Position grade, int payment, LocalDateTime firstDate) {
+	public EmployeeDto(String name, Position grade, int payment, LocalDateTime firstDate) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.grade = grade;
 		this.payment = payment;
@@ -83,6 +74,12 @@ public class EmployeeDto{
 	}
 	public void setFirstDate(LocalDateTime firstDate) {
 		this.firstDate = firstDate;
+	}
+	public Company getCompany() {
+		return company;
+	}
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 	
 }

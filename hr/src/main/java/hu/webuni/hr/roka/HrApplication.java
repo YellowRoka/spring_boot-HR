@@ -10,6 +10,10 @@ import hu.webuni.hr.roka.service.InitDbService;
 
 @SpringBootApplication
 public class HrApplication implements CommandLineRunner{
+	//TODO: Több helyen megjelöltem //TODO: jelöléssel ahol végképp elakadtam
+	//      még nagyon sok időt kéne ezekbe a fukciókba bele ölni, de nem szeretnék 
+	//      még jobban lemearadni, így félkész, agyon kommentezett és TODO-val tűzdelt kódot vagyok
+	//      kénytelen feltölteni, amiert nagyon nagyon mély elnézést kérek!
 	
 	@Autowired
 	private InitDbService initDbService;
@@ -34,6 +38,7 @@ public class HrApplication implements CommandLineRunner{
 		SpringApplication.run(HrApplication.class, args);
 	}
 
+//korábbi megoldott hiba:	
 //Első meghívás esetén hibát dob mivel több service is definiálva van és nincs kijelölve default. 
 //--> megoldva: megnevezés eggyezési hiba volt
 	@Override

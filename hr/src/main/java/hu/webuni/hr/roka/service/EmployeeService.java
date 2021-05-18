@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import hu.webuni.hr.roka.Grade;
+import hu.webuni.hr.roka.dto.EmployeeDto;
 import hu.webuni.hr.roka.mapper.EmployerMapper;
 import hu.webuni.hr.roka.model.Employer;
 
@@ -37,5 +38,7 @@ public interface EmployeeService{
 	public List<Employer> findBetweenDate(LocalDateTime firstDate, LocalDateTime lastDate);
 	
 	public int getPayRaisePercent(Employer employer);
+
+	public List<Employer> searchWithExample(EmployeeDto example);
 
 }

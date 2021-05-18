@@ -27,7 +27,7 @@ public class InitDbService {
 		this.positionRepository = positionRepository;
 	}
 
-	CompanyRepository companyRepository;
+	CompanyRepository  companyRepository;
 	EmployeeRepository employeeRepository;
 	PositionRepository positionRepository;
 	
@@ -43,7 +43,7 @@ public class InitDbService {
 		Position posJun = new Position(Grade.junior,Req.egyetem,500);
 		Position posMed = new Position(Grade.medior,Req.egyetem,500);
 		Position posSen = new Position(Grade.senior,Req.egyetem,500);
-		Position posCeo = new Position(Grade.ceo,Req.egyetem,500);
+		Position posCeo = new Position(Grade.ceo,   Req.egyetem,500);
 		
 		positionRepository.save(posJun);
 		positionRepository.save(posMed);
@@ -53,53 +53,53 @@ public class InitDbService {
 		
 		LocalDateTime date1 = LocalDateTime.of(2020, Month.JULY, 29, 19, 30, 40);
 		Employer emp1 = new Employer("Adam",posJun, 1000, date1);
-		employeeRepository.save(emp1);
+		//employeeRepository.save(emp1);
 		
 		LocalDateTime date2 = LocalDateTime.of(2020, Month.JULY, 29, 19, 30, 40);
 		Employer emp2 = new Employer( "Béla", posJun, 1000, date2);
-		employeeRepository.save(emp2);
+		//employeeRepository.save(emp2);
 		
 		LocalDateTime date3 = LocalDateTime.of(2020, Month.JULY, 29, 19, 30, 40);
 		Employer emp3 = new Employer("Dave", posJun, 1000, date3);
-		employeeRepository.save(emp3);
+		//employeeRepository.save(emp3);
 		
 		LocalDateTime date4 = LocalDateTime.of(2018, Month.JULY, 29, 19, 30, 40);
 		Employer emp4 = new Employer("Eva",posMed, 5000, date4);
-		employeeRepository.save(emp4);
+		//employeeRepository.save(emp4);
 		
 		LocalDateTime date5 = LocalDateTime.of(2018, Month.JULY, 29, 19, 30, 40);
 		Employer emp5 = new Employer("Géza",posMed, 5000, date5);
-		employeeRepository.save(emp5);
+		//employeeRepository.save(emp5);
 		
 		LocalDateTime date6 = LocalDateTime.of(2015, Month.JULY, 29, 19, 30, 40);
 		Employer emp6 = new Employer("Ferenc", posMed, 7000, date6);
-		employeeRepository.save(emp6);
+		//employeeRepository.save(emp6);
 		
 		LocalDateTime date7 = LocalDateTime.of(2015, Month.JULY, 29, 19, 30, 40);
 		Employer emp7 = new Employer("Károly", posSen, 7000, date7);
-		employeeRepository.save(emp7);
+		//employeeRepository.save(emp7);
 		
 		LocalDateTime date8 = LocalDateTime.of(2010, Month.JULY, 29, 19, 30, 40);
 		Employer emp8 = new Employer("István", posCeo, 10000, date8);
-		employeeRepository.save(emp8);
+		//employeeRepository.save(emp8);
 		
 		LocalDateTime date9 = LocalDateTime.of(2010, Month.JULY, 29, 19, 30, 40);
 		Employer emp9 = new Employer("László", posCeo, 10000, date9);
-		employeeRepository.save(emp9);
+		//employeeRepository.save(emp9);
 		
 		LocalDateTime date10 = LocalDateTime.of(2010, Month.JULY, 29, 19, 30, 40);
 		Employer emp10 = new Employer("Zsolt", posCeo, 10000, date10);
-		employeeRepository.save(emp10);
+		//employeeRepository.save(emp10);
 		
 		
 		
-		Company comp1 = new Company("Net Bt.", "Budapest", null);
+		Company comp1 = new Company("Net Bt.", "Budapest");
 		companyRepository.save(comp1);
 
-		Company comp2 = new Company("PC Kft.", "Budapest", null);
+		Company comp2 = new Company("PC Kft.", "Budapest");
 		companyRepository.save(comp2);
 		
-		Company comp3 = new Company("ISO Zrt.", "Budapest", null);
+		Company comp3 = new Company("ISO Zrt.", "Budapest");
 		companyRepository.save(comp3);
 		
 		emp1.setCompany(comp1);employeeRepository.save(emp1);
