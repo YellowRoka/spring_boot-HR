@@ -1,12 +1,10 @@
 package hu.webuni.hr.roka.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,10 +21,10 @@ import hu.webuni.hr.roka.dto.CompanyDto;
 import hu.webuni.hr.roka.dto.EmployeeDto;
 import hu.webuni.hr.roka.mapper.CompanyMapper;
 import hu.webuni.hr.roka.mapper.EmployerMapper;
+import hu.webuni.hr.roka.model.AverageSalaryByPosition;
 import hu.webuni.hr.roka.model.Company;
 import hu.webuni.hr.roka.model.Employer;
 import hu.webuni.hr.roka.repository.CompanyRepository;
-import hu.webuni.hr.roka.repository.EmployeeRepository;
 import hu.webuni.hr.roka.service.CompanyService;
 import hu.webuni.hr.roka.service.EmployeeService;
 
@@ -57,17 +55,18 @@ public class CompanyController {
 	//      annak ellenére h PGAdminban látszik a kapcsolat....bár én néhol sokallom az idegen kulcsok számát
 	@GetMapping("/all")
 	public List<CompanyDto> getAll(@RequestParam(value="fullOn", required = false) Boolean fullOn){
-		return (fullOn == null || fullOn == false)?
-				companyMapper.companiesToDtos(companyRepository.findAllWithEmployers()):
-					companyMapper.companiesToDtos(companyService.getAll(fullOn));
+		boolean withEmployees = fullOn!=null && fullOn;
+		List<Company> allEmployees = companyService.getAll(withEmployees);
+		return withEmployees ?
+				companyMapper.companiesToDtos(allEmployees):
+					companyMapper.companySummariesToDtos(allEmployees);
 		
 	}
 	
-	@GetMapping("/all2")
-	public Page<Company> getAll2(){
-	 Page<Company> all = companyService.getAll2();
-	 return all;
-				
+	@GetMapping("/all2") //pageable definiálára pl.: http://localhost:8080/api/companies/all2?page=0&size=1
+	public Page<CompanyDto> getAll2(@RequestParam(value="fullOn", required = false) Boolean fullOn, Pageable pageable) {
+		Page<Company> all = companyService.getAll2(pageable, (fullOn == null || fullOn == false));
+		return all.map(companyMapper::companieToDto);
 	}
 	
 	@GetMapping("/{id}")
@@ -124,21 +123,20 @@ public class CompanyController {
 	}
 
 	
-	@GetMapping
-	public List<CompanyDto> getCompaniesByGivenHeadCount(@RequestParam long headCount){
-		return companyMapper.companiesToDtos(
+	@GetMapping("/count")
+	public List<CompanyDto> getCompaniesByGivenHeadCount(@RequestParam int headCount){
+		return companyMapper.companySummariesToDtos(
 				companyService.getCompaniesWithGivenHeadCnt(headCount));
 	}
 	
 	@GetMapping("/payment")
-	public List<CompanyDto> getCompaniesWhereEmployerPaymentIsBigger(@RequestParam long payLimit){
-		return companyMapper.companiesToDtos(
+	public List<CompanyDto> getCompaniesWhereEmployerPaymentIsBigger(@RequestParam int payLimit){
+		return companyMapper.companySummariesToDtos(
 				companyService.getCompaniesWhereEmployerPaymentIsBigger(payLimit));
 	}
 	
 	@GetMapping("/avg")
-	public List<EmployeeDto> getEmployersGroupByAVGPayment(@RequestParam long companyID){
-		return employerMapper.employersToDtos(
-				companyService.getEmployersByAVGPayment(companyID));
+	public List<AverageSalaryByPosition> getEmployersGroupByAVGPayment(@RequestParam long companyID){
+		return companyService.getEmployersByAVGPayment(companyID);
 	}
 }
