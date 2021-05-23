@@ -53,7 +53,7 @@ public class HRController {
 	@Autowired
 	EmployeeRepository employeeRepository;
 	
-	//TODO: most már ő sem hajlandó lefutni
+	//TODO: --> javítva most már ő sem hajlandó lefutni
 	@GetMapping("/all")
 	public List<EmployeeDto> getAll(){
 		List<Employer> all = employeeService.findAll();
@@ -95,7 +95,7 @@ public class HRController {
 		employeeService.emloyerDelete(id);
 	}
 	
-	@GetMapping("payment")
+	@GetMapping("/payment")
 	public List<EmployeeDto> getEmployerByPayment(@RequestBody EmployeeDto employerDto) {
 		List<Employer> employres = employeeService.findAll();
 		Employer employer = employerMapper.dtoToEmployer(employerDto);
@@ -105,7 +105,7 @@ public class HRController {
 					.filter(emp -> emp.getPayment() > employer.getPayment()).collect(Collectors.toList()));
 	}
 	
-	@GetMapping("search")
+	@GetMapping("/search")
 	public  List<EmployeeDto> getEmployerByPayment_2(@RequestParam String limit) {
 		if(!limit.isEmpty()) {
 			List<Employer> employres = employeeService.findAll();
@@ -119,26 +119,26 @@ public class HRController {
 		}
 	}
 	
-	@GetMapping("grade")
+	@GetMapping("/grade")
 	public List<EmployeeDto> getEmployesByGrade(@RequestParam int grade){
 		List<Employer> employers = employeeService.findByGrade(Grade.values()[grade]);
 		return employerMapper.employersToDtos(employers);
 	}
 	
-	@GetMapping("partname")
+	@GetMapping("/partname")
 	public List<EmployeeDto> findByString(@RequestParam String partString){
 		List<Employer> employers = employeeService.findByPartName(partString);
 		return employerMapper.employersToDtos(employers);
 	}
 	
-	@GetMapping("dates")
+	@GetMapping("/dates")
 	public List<EmployeeDto> findBetweenDate(@RequestParam  String firstDate, @RequestParam  String lastDate){
 		List<Employer> employers = employeeService.findBetweenDate(LocalDateTime.parse(firstDate),LocalDateTime.parse(lastDate));
 		return employerMapper.employersToDtos(employers);
 	}
 	
-	//TODO:ezt egyszer sikerült elindítani de valamit elrontottam valahol...azóta ez a funkció nem megy :( 
-	@GetMapping("/example")
+	//TODO: --> javítva ezt egyszer sikerült elindítani de valamit elrontottam valahol...azóta ez a funkció nem megy :( 
+	@PostMapping("/example")
 	public List<EmployeeDto> findEmployerByExample(@RequestBody EmployeeDto example){
 		List<Employer> employers = employeeService.searchWithExample(example);
 		return employerMapper.employersToDtos(employers);

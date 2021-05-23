@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import hu.webuni.hr.roka.Grade;
+import hu.webuni.hr.roka.dto.CompanyDto;
 import hu.webuni.hr.roka.dto.EmployeeDto;
-import hu.webuni.hr.roka.model.Company;
 import hu.webuni.hr.roka.model.Employer;
 import hu.webuni.hr.roka.repository.EmployeeRepository;
 
@@ -75,7 +75,7 @@ public abstract class EmployerServiceAbsctract implements EmployeeService{
 	public List<Employer> searchWithExample(EmployeeDto example) {
 		long id = example.getId();
 		
-		Company comp = example.getCompany();
+		CompanyDto comp = example.getCompany();
 		LocalDateTime date = example.getFirstDate();
 		
 		String name = example.getName();
