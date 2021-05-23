@@ -1,14 +1,8 @@
 package hu.webuni.hr.roka.service;
 
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,12 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import hu.webuni.hr.roka.Grade;
-import hu.webuni.hr.roka.dto.CompanyDto;
+import hu.webuni.hr.roka.model.AverageSalaryByPosition;
 import hu.webuni.hr.roka.model.Company;
 import hu.webuni.hr.roka.model.Employer;
 import hu.webuni.hr.roka.repository.CompanyRepository;
-import hu.webuni.hr.roka.repository.EmployeeRepository;
 
 public class CompanyService {
 	
@@ -33,24 +25,8 @@ public class CompanyService {
 	}
 
 	public List<Company> getAll( Boolean fullOn){
-		List<Company> companies = companyRepository.findAll();
-		
-		if(fullOn==null)fullOn = false;
-		if(fullOn == true)
-			return companies;
-		else {
-			List<Company> limitedCompaniesList = new ArrayList<>();
-			
-			for(Company entry : companies) {
-				Company tmpCopy = new Company();
-				tmpCopy.setId      ( entry.getId() ); 
-				tmpCopy.setName    ( entry.getName() );
-				tmpCopy.setLocation( entry.getLocation() );
-				limitedCompaniesList.add(tmpCopy);
-			}				
-			return limitedCompaniesList;
-		}	
-	}
+		return fullOn ? companyRepository.findAllWithEmployers() : companyRepository.findAll();
+	}		
 		
 	public Company getCompanyById( long id, Boolean fullOn) {
 		Company comp = companyRepository.findById(id)
@@ -132,32 +108,24 @@ public class CompanyService {
 	}
 	
 	//TODO: az alábbi 4 NULL-os lekérdezést nem tudom összehozni sokadig nekifutásra sem :\
-	//TODO: 1
-	public List<Company> getCompaniesWithGivenHeadCnt(long headCount){
-		//return companyRepository.findAllCompanyWhereCountByEmplyoresGreaterThanEqual(headCount);
-		return null;
+	//TODO: 1 --> javítva
+	public List<Company> getCompaniesWithGivenHeadCnt(int headCount){
+		return companyRepository.findAllCompanyWhereCountByEmplyoresGreaterThanEqual(headCount);
 	}
 	
-	//TODO: 2
-	public List<Company> getCompaniesWhereEmployerPaymentIsBigger(long payment){
-		//return companyRepository.findAllWhereEmployerPaymentIsBigger(payment);
-		return null;
+	//TODO: 2 --> javítva
+	public List<Company> getCompaniesWhereEmployerPaymentIsBigger(int payment){
+		return companyRepository.findAllWhereEmployerPaymentIsBigger(payment);
 	}
 	
-	//TODO:3
-	public List<Employer> getEmployersByAVGPayment(long companyID){
-		//return companyRepository.groupEmployerByAveragePayment(companyID);
-		return null;
+	//TODO:3 --> javítva
+	public List<AverageSalaryByPosition> getEmployersByAVGPayment(long companyID){
+		return companyRepository.groupEmployerByAveragePayment(companyID);
 	}
 	
-	//TODO:4
-	public Page<Company> getAll2(){
-		Pageable firstPageWithTwoElements = PageRequest.of(0, 2);
-		Pageable secondPageWithFiveElements = PageRequest.of(1, 5);
-		
-		//Page<Company> pagebleFounds = (Page<Company>) companyRepository.pagebleFindAll(firstPageWithTwoElements);
-		//return pagebleFounds;
-		return null;
+	//TODO:4 --> javítva
+	public Page<Company> getAll2(Pageable pageable, boolean summaryOnly) { 
+		return summaryOnly ? companyRepository.findAll(pageable) : companyRepository.findAllWithEmployers(pageable);
 	}
 
 }

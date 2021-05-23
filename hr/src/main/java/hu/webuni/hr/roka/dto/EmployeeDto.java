@@ -33,7 +33,7 @@ public class EmployeeDto{
 	@PastOrPresent(message = "future value not acceptable")//@Past
 	private LocalDateTime firstDate;
 	
-	private Company company;
+	private CompanyDto company;
 	
 	public EmployeeDto() {}
 	
@@ -75,10 +75,10 @@ public class EmployeeDto{
 	public void setFirstDate(LocalDateTime firstDate) {
 		this.firstDate = firstDate;
 	}
-	public Company getCompany() {
+	public CompanyDto getCompany() {
 		return company;
 	}
-	public void setCompany(Company company) {
+	public void setCompany(CompanyDto company) {
 		this.company = company;
 	}
 	
