@@ -108,22 +108,22 @@ public class CompanyService {
 	}
 	
 	//TODO: az alábbi 4 NULL-os lekérdezést nem tudom összehozni sokadig nekifutásra sem :\
-	//TODO: 1
+	//TODO: 1 --> javítva
 	public List<Company> getCompaniesWithGivenHeadCnt(int headCount){
 		return companyRepository.findAllCompanyWhereCountByEmplyoresGreaterThanEqual(headCount);
 	}
 	
-	//TODO: 2
+	//TODO: 2 --> javítva
 	public List<Company> getCompaniesWhereEmployerPaymentIsBigger(int payment){
 		return companyRepository.findAllWhereEmployerPaymentIsBigger(payment);
 	}
 	
-	//TODO:3
+	//TODO:3 --> javítva
 	public List<AverageSalaryByPosition> getEmployersByAVGPayment(long companyID){
 		return companyRepository.groupEmployerByAveragePayment(companyID);
 	}
 	
-	//TODO:4
+	//TODO:4 --> javítva
 	public Page<Company> getAll2(Pageable pageable, boolean summaryOnly) { 
 		return summaryOnly ? companyRepository.findAll(pageable) : companyRepository.findAllWithEmployers(pageable);
 	}

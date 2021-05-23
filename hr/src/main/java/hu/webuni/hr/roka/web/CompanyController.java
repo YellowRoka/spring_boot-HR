@@ -49,7 +49,7 @@ public class CompanyController {
 	@Autowired
 	EmployerMapper employerMapper;
 	
-	//TODO: itt sikerült valamit addig addig csiszolgatnom még legalább egy 660 soror rekurziót kidobott
+	//TODO: --> javítva itt sikerült valamit addig addig csiszolgatnom még legalább egy 660 soror rekurziót kidobott
 	//      ezután sikerült redukálni 440-re
 	//      majd olyan jól sikerült a redukálás, hogy többet nem volt hajlandó listázni az alkalmazottakat
 	//      annak ellenére h PGAdminban látszik a kapcsolat....bár én néhol sokallom az idegen kulcsok számát
