@@ -22,6 +22,7 @@ public class PositionController {
 	@Autowired
 	PositionService positionService;
 	
+	
 	@PutMapping
 	public List<Position> modifyPosition(int rise, @RequestParam Grade grade){
 

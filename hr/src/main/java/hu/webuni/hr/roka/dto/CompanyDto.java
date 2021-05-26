@@ -10,10 +10,10 @@ public class CompanyDto {
 	private String name;
 	private String location;
 	private Type   type;
-	private List<EmployeeDto> emplyores;
+	private List<EmployeeDto> employers;
 	
 	public CompanyDto(){}
-
+/*
 	public CompanyDto(String name, String location) {
 		super();
 		this.name = name;
@@ -26,7 +26,7 @@ public class CompanyDto {
 		this.location = location;
 		//this.employers = emplyores;
 	}
-
+*/
 	public long getId() {
 		return id;
 	}
@@ -58,12 +58,24 @@ public class CompanyDto {
 	public void setType(Type type) {
 		this.type = type;
 	}
-	public List<EmployeeDto> getEmplyores() {
-		return emplyores;
+	
+	public List<EmployeeDto> getEmployers() {
+		return employers;
 	}
 
-	public void setEmplyores( List<EmployeeDto> emplyores) {
-		this.emplyores = emplyores;
+	public void setEmployers( List<EmployeeDto> employers) {
+		if(this.employers == null) {
+			this.employers = employers;
+		}
+		//emplyores.forEach(it->it.setCompany(this));
+		//}
+		
+	}
+	
+	
+	public void addEmployers(EmployeeDto employer) {
+		employer.setCompany(this);
+		this.employers.add(employer);
 	}
 	
 	

@@ -1,37 +1,26 @@
-package hu.webuni.hr.roka.model;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+package hu.webuni.hr.roka.dto;
 
 import hu.webuni.hr.roka.Grade;
 import hu.webuni.hr.roka.Req;
-import hu.webuni.hr.roka.dto.EmployeeDto;
 
-@Entity
-public class Position {
+public class PositionDto {
 
-	@Id
-	@GeneratedValue
 	private long   id;
 	private Grade  posName;
 	private Req    req;
 	private int    minimalPayment;
 	
-
-	@OneToOne
-	private Employer employer;
+	private EmployeeDto employer;
 	
-	public Position() {};
-	
-	public Position(Grade posName, Req req, int minimalPayment) {
+	public PositionDto() {};
+/*
+	public PositionDto(Grade posName, Req req, int minimalPayment) {
 		super();
 		this.posName = posName;
 		this.req = req;
 		this.minimalPayment = minimalPayment;
 	}
-
+*/
 	public long getId() {
 		return id;
 	}
@@ -64,15 +53,21 @@ public class Position {
 		this.minimalPayment = minimalPayment;
 	}
 	
-	public Employer getEmployer() {
+	public EmployeeDto getEmployer() {
 		return employer;
 	}
 
-	public void setEmployer(Employer employer) {
-		//if(this.employer == null) {
+	public void setEmployer(EmployeeDto employer) {
+		if(this.employer == null) {
 			this.employer = employer;
-		//}
-		//employer.setGrade(this);
+		}
 	}
-	
+/*
+	public void addEmployer(EmployeeDto employer) {
+		if(this.employer == null) {
+			this.employer = employer;
+		}
+		employer.setGrade(this);
+	}
+	*/
 }

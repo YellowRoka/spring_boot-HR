@@ -17,13 +17,13 @@ public interface EmployeeRepository extends JpaRepository<Employer, Long>,JpaSpe
 
 	//@EntityGraph(attributePaths = {"company, company.employres"})
 	//@Query("SELECT e FROM Employer e")
-	List<Employer> findAll();
+	public List<Employer> findAll();
 	
-	List<Employer> findByGrade(Grade grade);
+	public List<Employer> findByGrade(Grade grade);
 	
 	//List<Employer> findByNameIsContaining(String partString);
 	
-	List<Employer> findByNameIgnoreCaseStartsWith(String partString);
+	public List<Employer> findByNameIgnoreCaseStartsWith(String partString);
 	
-	List<Employer> findAllByFirstDateBetween(LocalDateTime firstDate, LocalDateTime lastDate);
+	public List<Employer> findAllByFirstDateBetween(LocalDateTime firstDate, LocalDateTime lastDate);
 }

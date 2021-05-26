@@ -79,54 +79,54 @@ public class companyControllerIT {
 		
 		
 		LocalDateTime date1 = LocalDateTime.of(2020, Month.JULY, 29, 19, 30, 40);
-		Employer emp1 = new Employer("Adam",posJun, 1000, date1);
-		employeeRepository.save(emp1);
+		Employer emp1 = new Employer("Adam", 1000, date1);
+		emp1.setGrade(posJun);
 		
 		LocalDateTime date2 = LocalDateTime.of(2020, Month.JULY, 29, 19, 30, 40);
-		Employer emp2 = new Employer( "Béla", posJun, 1000, date2);
-		employeeRepository.save(emp2);
+		Employer emp2 = new Employer( "Béla", 1000, date2);
+		emp2.setGrade(posJun);
 		
 		LocalDateTime date3 = LocalDateTime.of(2020, Month.JULY, 29, 19, 30, 40);
-		Employer emp3 = new Employer("Dave", posJun, 1000, date3);
-		employeeRepository.save(emp3);
+		Employer emp3 = new Employer("Csaba", 1000, date3);
+		emp3.setGrade(posJun);
 		
 		LocalDateTime date4 = LocalDateTime.of(2018, Month.JULY, 29, 19, 30, 40);
-		Employer emp4 = new Employer("Eva",posMed, 5000, date4);
-		employeeRepository.save(emp4);
+		Employer emp4 = new Employer("Eva", 5000, date4);
+		emp4.setGrade(posMed);
 		
 		LocalDateTime date5 = LocalDateTime.of(2018, Month.JULY, 29, 19, 30, 40);
-		Employer emp5 = new Employer("Géza",posMed, 5000, date5);
-		employeeRepository.save(emp5);
+		Employer emp5 = new Employer("Géza", 5000, date5);
+		emp5.setGrade(posMed);
 		
 		LocalDateTime date6 = LocalDateTime.of(2015, Month.JULY, 29, 19, 30, 40);
-		Employer emp6 = new Employer("Ferenc", posMed, 7000, date6);
-		employeeRepository.save(emp6);
+		Employer emp6 = new Employer("Ferenc", 7000, date6);
+		emp6.setGrade(posSen);
 		
 		LocalDateTime date7 = LocalDateTime.of(2015, Month.JULY, 29, 19, 30, 40);
-		Employer emp7 = new Employer("Károly", posSen, 7000, date7);
-		employeeRepository.save(emp7);
+		Employer emp7 = new Employer("Károly", 7000, date7);
+		emp7.setGrade(posSen);
 		
 		LocalDateTime date8 = LocalDateTime.of(2010, Month.JULY, 29, 19, 30, 40);
-		Employer emp8 = new Employer("István", posCeo, 10000, date8);
-		employeeRepository.save(emp8);
+		Employer emp8 = new Employer("István", 10000, date8);
+		emp8.setGrade(posCeo);
 		
 		LocalDateTime date9 = LocalDateTime.of(2010, Month.JULY, 29, 19, 30, 40);
-		Employer emp9 = new Employer("László", posCeo, 10000, date9);
-		employeeRepository.save(emp9);
+		Employer emp9 = new Employer("László", 10000, date9);
+		emp9.setGrade(posCeo);
 		
 		LocalDateTime date10 = LocalDateTime.of(2010, Month.JULY, 29, 19, 30, 40);
-		Employer emp10 = new Employer("Zsolt", posCeo, 10000, date10);
-		employeeRepository.save(emp10);
+		Employer emp10 = new Employer("Zsolt", 10000, date10);
+		emp10.setGrade(posCeo);
 		
 		
 		
-		Company comp1 = new Company("Net Bt.", "Budapest", null);
+		Company comp1 = new Company("Net Bt.", "Budapest");
 		companyRepository.save(comp1);
 
-		Company comp2 = new Company("PC Kft.", "Budapest", null);
+		Company comp2 = new Company("PC Kft.", "Budapest");
 		companyRepository.save(comp2);
 		
-		Company comp3 = new Company("ISO Zrt.", "Budapest", null);
+		Company comp3 = new Company("ISO Zrt.", "Budapest");
 		companyRepository.save(comp3);
 		
 		emp1.setCompany(comp1);employeeRepository.save(emp1);
@@ -156,7 +156,7 @@ public class companyControllerIT {
 		
 		Position      posJun = new Position(Grade.junior,Req.egyetem,500);
 		LocalDateTime date1  = LocalDateTime.of(2018, Month.JULY, 29, 19, 30, 40);
-		Employer      newEmp = new Employer("AAA",null, 1000, date1);
+		Employer      newEmp = new Employer("AAA", 1000, date1);
 		
 		List<Company> comps = companyRepository.findAll();
 		List<Employer> emps = employeeRepository.findAll();
@@ -220,11 +220,11 @@ public class companyControllerIT {
 		
 		
 		LocalDateTime date1 = LocalDateTime.of(2020, Month.JULY, 29, 19, 30, 40);
-		Employer emp1 = new Employer("FFF",null, 1000, date1);
+		Employer emp1 = new Employer("FFF", 1000, date1);
 		emp1.setCompany(comps.get(0));
 		
 		LocalDateTime date2 = LocalDateTime.of(2020, Month.JULY, 29, 19, 30, 40);
-		Employer emp2 = new Employer( "GGG", null, 1000, date2);
+		Employer emp2 = new Employer( "GGG", 1000, date2);
 		emp2.setCompany(comps.get(0));
 		
 		employeeRepository.save(emp1);

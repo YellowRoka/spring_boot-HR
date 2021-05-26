@@ -3,6 +3,8 @@ package hu.webuni.hr.roka.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import hu.webuni.hr.roka.Grade;
@@ -12,9 +14,13 @@ import hu.webuni.hr.roka.model.Position;
 import hu.webuni.hr.roka.repository.CompanyRepository;
 import hu.webuni.hr.roka.repository.PositionRepository;
 
+//@Service
 public class PositionService {
 
+	//@Autowired
 	PositionRepository positionRepository;
+	
+	//@Autowired
 	CompanyRepository companyRepository;
 
 	public PositionService(PositionRepository positionRepository, CompanyRepository companyRepository) {

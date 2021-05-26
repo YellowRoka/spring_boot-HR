@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import hu.webuni.hr.roka.Grade;
 import hu.webuni.hr.roka.Req;
 import hu.webuni.hr.roka.dto.EmployeeDto;
+import hu.webuni.hr.roka.dto.PositionDto;
 import hu.webuni.hr.roka.model.Employer;
 import hu.webuni.hr.roka.model.Position;
 
@@ -37,8 +38,17 @@ public class hrServiceIT {
 		List<EmployeeDto> empBefore = getAllEmp();
 		
 		LocalDateTime date = LocalDateTime.of(2020, Month.JULY, 29, 19, 30, 40);
-		EmployeeDto newEmployer = new EmployeeDto("Géza",new Position(Grade.ceo,Req.egyetem,500),30000,date);
+
+		EmployeeDto newEmployer = new EmployeeDto("Géza",30000,date);
 		newEmployer.setId(0);
+		
+		Position position2 = new Position();
+		position2.setPosName(Grade.ceo);
+		position2.setReq(Req.egyetem);
+		position2.setMinimalPayment(500);
+		newEmployer.setGrade(position2);
+		
+		newEmployer.setGrade(position2);
 		
 		createEmp(newEmployer);
 		
@@ -69,7 +79,17 @@ public class hrServiceIT {
 	void testThatCreatedEmployerIsListedFalse() throws Exception {
 		
 		LocalDateTime date = LocalDateTime.of(2020, Month.JULY, 29, 19, 30, 40);
-		EmployeeDto newEmployer = new EmployeeDto("",new Position(Grade.ceo,Req.egyetem,500),30000,date);
+
+
+		Employer newEmployer = new Employer("",30000,date);
+		
+		Position position2 = new Position();
+		position2.setPosName(Grade.ceo);
+		position2.setReq(Req.egyetem);
+		position2.setMinimalPayment(500);
+		newEmployer.setGrade(position2);
+		
+		newEmployer.setGrade(position2);
 		
 		newEmployer.setId(1);
 		
@@ -92,7 +112,14 @@ public class hrServiceIT {
 		EmployeeDto oldEmp = empBefore.get(position);
 		EmployeeDto modifEmp = empBefore.get(position);
 		modifEmp.setName("András");
-		modifEmp.setGrade(new Position(Grade.ceo,Req.egyetem,500));
+		
+		
+		Position position2 = new Position();
+		position2.setPosName(Grade.ceo);
+		position2.setReq(Req.egyetem);
+		position2.setMinimalPayment(500);
+		modifEmp.setGrade(position2);
+		
 		modifEmp.setPayment(7777);
 		
 		
@@ -119,7 +146,12 @@ public class hrServiceIT {
 		
 		EmployeeDto modifEmp = empBefore.get(position);
 		modifEmp.setName("András");
-		modifEmp.setGrade(new Position(Grade.ceo,Req.egyetem,500));
+		Position position2 = new Position();
+		position2.setPosName(Grade.ceo);
+		position2.setReq(Req.egyetem);
+		position2.setMinimalPayment(500);
+		
+		modifEmp.setGrade(position2);
 		modifEmp.setPayment(7777);
 		
 		

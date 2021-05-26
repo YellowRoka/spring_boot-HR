@@ -1,19 +1,12 @@
 package hu.webuni.hr.roka.model;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import hu.webuni.hr.roka.Type;
 
@@ -29,8 +22,6 @@ public class Company {
 	private Type     type;
 	
 	@OneToMany(mappedBy = "company")
-	//@JsonManagedReference
-	//@JsonBackReference
 	private List <Employer> employers;
 	
 	public Company(){}
@@ -41,11 +32,11 @@ public class Company {
 		this.location  = location;
 	}
 	
-	public Company(String name, String location , List<Employer> emplyores) {
+	public Company(String name, String location , List<Employer> employers) {
 		super();
 		this.name      = name;
 		this.location  = location;
-		//this.employers = emplyores;
+		this.employers = employers;
 	}
 
 	public long getId() {
@@ -85,11 +76,8 @@ public class Company {
 	}
 	
 	public void addEmployer(Employer employer) {
-		//if(this.employers == null) {
-			this.employers.add(employer);
-		//}
-		//this.employers.add(employer);
-		//employer.setCompany(this);
+		employer.setCompany(this);
+		this.employers.add(employer);
 	}
 	
 	public void setEmployers(List<Employer> employers) {

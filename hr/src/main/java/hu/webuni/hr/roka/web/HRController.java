@@ -1,20 +1,15 @@
 package hu.webuni.hr.roka.web;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.hibernate.annotations.Proxy;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -30,13 +24,9 @@ import org.springframework.web.server.ResponseStatusException;
 import hu.webuni.hr.roka.Grade;
 import hu.webuni.hr.roka.dto.EmployeeDto;
 import hu.webuni.hr.roka.mapper.EmployerMapper;
-import hu.webuni.hr.roka.model.Company;
 import hu.webuni.hr.roka.model.Employer;
-import hu.webuni.hr.roka.model.Position;
 import hu.webuni.hr.roka.repository.EmployeeRepository;
 import hu.webuni.hr.roka.service.EmployeeService;
-import hu.webuni.hr.roka.service.EmployerServiceAbsctract;
-import hu.webuni.hr.roka.service.EmployerSpecifications;
 
 
 @RestController
@@ -95,7 +85,7 @@ public class HRController {
 		employeeService.emloyerDelete(id);
 	}
 	
-	@GetMapping("payment")
+	@GetMapping("/payment")
 	public List<EmployeeDto> getEmployerByPayment(@RequestBody EmployeeDto employerDto) {
 		List<Employer> employres = employeeService.findAll();
 		Employer employer = employerMapper.dtoToEmployer(employerDto);
@@ -105,7 +95,7 @@ public class HRController {
 					.filter(emp -> emp.getPayment() > employer.getPayment()).collect(Collectors.toList()));
 	}
 	
-	@GetMapping("search")
+	@GetMapping("/search")
 	public  List<EmployeeDto> getEmployerByPayment_2(@RequestParam String limit) {
 		if(!limit.isEmpty()) {
 			List<Employer> employres = employeeService.findAll();
@@ -119,19 +109,19 @@ public class HRController {
 		}
 	}
 	
-	@GetMapping("grade")
+	@GetMapping("/grade")
 	public List<EmployeeDto> getEmployesByGrade(@RequestParam int grade){
 		List<Employer> employers = employeeService.findByGrade(Grade.values()[grade]);
 		return employerMapper.employersToDtos(employers);
 	}
 	
-	@GetMapping("partname")
+	@GetMapping("/partname")
 	public List<EmployeeDto> findByString(@RequestParam String partString){
 		List<Employer> employers = employeeService.findByPartName(partString);
 		return employerMapper.employersToDtos(employers);
 	}
 	
-	@GetMapping("dates")
+	@GetMapping("/dates")
 	public List<EmployeeDto> findBetweenDate(@RequestParam  String firstDate, @RequestParam  String lastDate){
 		List<Employer> employers = employeeService.findBetweenDate(LocalDateTime.parse(firstDate),LocalDateTime.parse(lastDate));
 		return employerMapper.employersToDtos(employers);

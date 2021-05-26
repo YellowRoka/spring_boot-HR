@@ -16,5 +16,5 @@ import hu.webuni.hr.roka.model.Position;
 
 public interface PositionRepository extends JpaRepository<Position, Long> {
 
-	List<Position> findByPosName(Grade posName);
-	}
+	public List<Position> findByPosName(Grade posName);
+}

@@ -2,20 +2,14 @@ package hu.webuni.hr.roka.dto;
 
 import java.time.LocalDateTime;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.PastOrPresent;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.lang.NonNull;
-
-import hu.webuni.hr.roka.Grade;
 import hu.webuni.hr.roka.model.Company;
-import hu.webuni.hr.roka.model.Employer;
 import hu.webuni.hr.roka.model.Position;
+import hu.webuni.hr.roka.model.Vacation;
 
 public class EmployeeDto{
 
@@ -33,14 +27,15 @@ public class EmployeeDto{
 	@PastOrPresent(message = "future value not acceptable")//@Past
 	private LocalDateTime firstDate;
 	
-	private Company company;
+	private CompanyDto company;
 	
+	private Vacation vacation;
+
 	public EmployeeDto() {}
 	
-	public EmployeeDto(String name, Position grade, int payment, LocalDateTime firstDate) {
+	public EmployeeDto(String name, int payment, LocalDateTime firstDate) {
 		super();
 		this.name = name;
-		this.grade = grade;
 		this.payment = payment;
 		this.firstDate = firstDate;
 	}
@@ -60,8 +55,8 @@ public class EmployeeDto{
 	public Position getGrade() {
 		return grade;
 	}
-	public void setGrade(Position grade) {
-		this.grade = grade;
+	public void setGrade(Position position) {
+		this.grade = position;
 	}
 	public int getPayment() {
 		return payment;
@@ -75,11 +70,18 @@ public class EmployeeDto{
 	public void setFirstDate(LocalDateTime firstDate) {
 		this.firstDate = firstDate;
 	}
-	public Company getCompany() {
+	public CompanyDto getCompany() {
 		return company;
 	}
-	public void setCompany(Company company) {
+	public void setCompany(CompanyDto company) {
 		this.company = company;
 	}
 	
+	public Vacation getVacation() {
+		return vacation;
+	}
+
+	public void setVacation(Vacation vacation) {
+		this.vacation = vacation;
+	}
 }
